@@ -8,16 +8,17 @@ def help(*args):
     for arg in args:
         if arg == 'line_plot':
             print("***** A Research-grade Zero-effort and User-friendly Plotting Experience using Python (ARZU_PlExPy) *****\n"
-                "line_plot: A function for plotting 1-dimensional data curves in a single plot.\n"
-                "USAGE: line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, path='', dpi=128)\n"
-                "OPTIONS:   y=[y[i]] for integer i from 0 to, say, n. This will plot n curves of y in a single plot.\n"
-                "           x=[x[i]] for integer i from 0 to, say, m. Note that either m=n (1 x for each y) or m=1 (1 x for all y) or m=0 (x unspecified).\n"
-                "           labels=[label[i]] for integer i from 0 to, say, l. Note that either l=n (1 label for each y, legends will be plotted) or l=0 (no labels specified, no legends will be plotted).\n"
-                "           colors=[color[i]] for integer i from 0 to, say, c. Note that either c=n (user specified colors will be used, check for compatibility with matplotlib) or c=0 (matplotlib default colors will be used).\n"
-                "           axis='x', 'y' or 'both'. See matplotlib.axes.Axes.tick_params\n"
-                "           direction='in', 'out' or 'inout'. See matplotlib.axes.Axes.tick_params\n"
-                "           major_length, major_width, minor_length and minor_width are same as length and width of matplotlib.axes.Axes.tick_params, but applied to major and minor ticks separately.\n"
-                "           If path (including filename and extension, e.g. ./plots/file_name.png) is specified, the figure will be saved to the specified directory with the specified filename, extension and DPI.\n")
+                  "line_plot: A function for plotting 1-dimensional data curves in a single plot.\n"
+                  "USAGE: line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, path='', dpi=128)\n"
+                  "OPTIONS:     y=[y[i]] for integer i from 0 to, say, n. This will plot n curves of y in a single plot.\n"
+                  "             x=[x[i]] for integer i from 0 to, say, m. Note that either m=n (1 x for each y) or m=1 (1 x for all y) or m=0 (x unspecified).\n"
+                  "             labels=[label[i]] for integer i from 0 to, say, l. Note that either l=n (1 label for each y, legends will be plotted) or l=0 (no labels specified, no legends will be plotted).\n"
+                  "             colors=[color[i]] for integer i from 0 to, say, c. Note that either c=n (user specified colors will be used, check for compatibility with matplotlib) or c=0 (matplotlib default colors will be used).\n"
+                  "             y_lim and x_lim should be in the format [lower_limit, upper_limit]"
+                  "             axis='x', 'y' or 'both'. See matplotlib.axes.Axes.tick_params\n"
+                  "             direction='in', 'out' or 'inout'. See matplotlib.axes.Axes.tick_params\n"
+                  "             major_length, major_width, minor_length and minor_width are same as length and width of matplotlib.axes.Axes.tick_params, but applied to major and minor ticks separately.\n"
+                  "             If path (including filename and extension, e.g. ./plots/file_name.png) is specified, the figure will be saved to the specified directory with the specified filename, extension and DPI.\n")
             return
 
         elif arg == 'sub_plots':
@@ -41,7 +42,7 @@ def help(*args):
     return
 
 
-def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, path='', dpi=128):
+def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, path='', dpi=128):
     fig = plt.figure(figsize=(20, 11.25))
     ax = fig.gca()
     m = len(x)
@@ -127,6 +128,10 @@ def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label',
     plt.title(title, fontsize=18)
     plt.xlabel(xlabel, fontsize=16)
     plt.ylabel(ylabel, fontsize=16)
+    if y_lim != []:
+        plt.ylim(y_lim[0], y_lim[1])
+    if x_lim != []:
+        plt.xlim(x_lim[0], x_lim[1])
     ax.xaxis.set_minor_locator(AutoMinorLocator())
     ax.yaxis.set_minor_locator(AutoMinorLocator())
     ax.tick_params(axis=axis, direction=direction, which='minor', length=minor_length, width=minor_width, right='on', top='on')
