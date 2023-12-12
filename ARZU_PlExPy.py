@@ -14,10 +14,11 @@ def help(*args):
                   "             x=[x[i]] for integer i from 0 to, say, m. Note that either m=n (1 x for each y) or m=1 (1 x for all y) or m=0 (x unspecified).\n"
                   "             labels=[label[i]] for integer i from 0 to, say, l. Note that either l=n (1 label for each y, legends will be plotted) or l=0 (no labels specified, no legends will be plotted).\n"
                   "             colors=[color[i]] for integer i from 0 to, say, c. Note that either c=n (user specified colors will be used, check for compatibility with matplotlib) or c=0 (matplotlib default colors will be used).\n"
-                  "             y_lim and x_lim should be in the format [lower_limit, upper_limit]"
-                  "             axis='x', 'y' or 'both'. See matplotlib.axes.Axes.tick_params\n"
-                  "             direction='in', 'out' or 'inout'. See matplotlib.axes.Axes.tick_params\n"
-                  "             major_length, major_width, minor_length and minor_width are same as length and width of matplotlib.axes.Axes.tick_params, but applied to major and minor ticks separately.\n"
+                  "             y_lim and x_lim should be in the format [lower_limit, upper_limit]. matplotlib defaults will be used if left unspecified."
+                  "             axis='x', 'y' or 'both'. Here, default is 'both'. See matplotlib.axes.Axes.tick_params\n"
+                  "             direction='in', 'out' or 'inout'. Here, default is 'in'. See matplotlib.axes.Axes.tick_params\n"
+                  "             major_length=8, major_width=1, minor_length=4 and minor_width=1 are same as length and width of matplotlib.axes.Axes.tick_params, but applied to major and minor ticks separately.\n"
+                  "             fig_size=[fig_width (along x), fig_height (along y)], by default [20, 11.25]"
                   "             If path (including filename and extension, e.g. ./plots/file_name.png) is specified, the figure will be saved to the specified directory with the specified filename, extension and DPI.\n")
             return
 
@@ -42,8 +43,8 @@ def help(*args):
     return
 
 
-def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, path='', dpi=128):
-    fig = plt.figure(figsize=(20, 11.25))
+def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, fig_size=[20, 11.25], path='', dpi=128):
+    fig = plt.figure(figsize=fig_size)
     ax = fig.gca()
     m = len(x)
     n = len(y)
