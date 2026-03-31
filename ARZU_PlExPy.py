@@ -2,7 +2,20 @@
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
-plt.rc('font', family='serif')
+
+# Setting up the matplotlib environment. These sizes work well for plt.figure(figsize=(10,x)).
+def setFonts(fontsize=18, axisLW=1, ticksize=5, tick_direction='out', padding=5, top_ticks=False, right_ticks=False):
+	plt.rc('font', family='serif', size=fontsize)													# controls default font family and text sizes
+	plt.rc('axes', titlesize=fontsize, linewidth=axisLW, labelsize=fontsize, labelpad=padding)		# fontsize of the axes title and the x and y labels
+	plt.rc('xtick', labelsize=fontsize, direction=tick_direction, top=top_ticks)					# fontsize of the xtick labels
+	plt.rc('ytick', labelsize=fontsize, direction=tick_direction, right=right_ticks)				# fontsize of the ytick labels
+	plt.rc('xtick.major', pad=padding, width=axisLW, size=ticksize)									# size of x major ticks
+	plt.rc('ytick.major', pad=padding, width=axisLW, size=ticksize)									# size of y major ticks
+	plt.rc('xtick.minor', width=axisLW, size=ticksize/2)											# size of x minor ticks
+	plt.rc('ytick.minor', width=axisLW, size=ticksize/2)											# size of y minor ticks
+	plt.rc('legend', fontsize=fontsize)    															# legend fontsize
+	plt.rc('figure', titlesize=fontsize)															# fontsize of the figure title
+	plt.rc('mathtext', fontset='custom', rm='serif')												# raw text in math environment will be set to serif
 
 def help(*args):
     for arg in args:
@@ -34,14 +47,12 @@ def help(*args):
             print("contour_plot will be added soon. Till then, hold tight!")
             return
 
-
     print("***** A Research-grade Zero-effort and User-friendly Plotting Experience using Python (ARZU_PlExPy) *****\n"
-        "The following plotting functions are currently available:\n"
-        "['func_name'] = ['line_plot']\n"
-        "Type help('func_name') to display the help for 'func_name'."
-        "Functions like 'sub_plots', 'color_plot', 'contour_plot', etc. will be added soon. Till then, hold tight!")
+          "The following plotting functions are currently available:\n"
+          "['func_name'] = ['line_plot']\n"
+          "Type help('func_name') to display the help for 'func_name'."
+          "Functions like 'sub_plots', 'color_plot', 'contour_plot', etc. will be added soon. Till then, hold tight!")
     return
-
 
 def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, fig_size=[20, 11.25], path='', dpi=128):
     fig = plt.figure(figsize=fig_size)
@@ -62,7 +73,7 @@ def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label',
     if l != n and l != 0:
         print("Invalid labels specification. len(labels) should be either zero or equal to len(y) - one label for each y[i].")
         return
-    
+
     if l == n:
         if c == n:
             if n > 0:           # one or more curves in the same plot
@@ -72,14 +83,14 @@ def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label',
                 elif m == 1 and n != 1:     # same x values for all y[i]
                     for i in range(n):
                         plt.plot(x[0], y[i], colors[i], label=labels[i])
-                else:                       # x values not specified 
+                else:                       # x values not specified
                     for i in range(n):
                         plt.plot(y[i], colors[i], label=labels[i])
 
             else:               # empty figure
                 plt.plot()
 
-        else: # c == 0
+        else:  # c == 0
             if n > 0:           # one or more curves in the same plot
                 if m == n:                  # one x[i] for each y[i]
                     for i in range(n):
@@ -95,7 +106,7 @@ def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label',
                 plt.plot()
         plt.legend(fontsize=16)
 
-    else: # l == 0
+    else:  # l == 0
         if c == n:
             if n > 0:           # one or more curves in the same plot
                 if m == n:                  # one x[i] for each y[i]
@@ -135,10 +146,141 @@ def line_plot(y=[], x=[], labels=[], colors=[], title='Title', xlabel='X Label',
         plt.xlim(x_lim[0], x_lim[1])
     ax.xaxis.set_minor_locator(AutoMinorLocator())
     ax.yaxis.set_minor_locator(AutoMinorLocator())
-    ax.tick_params(axis=axis, direction=direction, which='minor', length=minor_length, width=minor_width, right='on', top='on')
-    ax.tick_params(axis=axis, direction=direction, which='major', length=major_length, width=major_width, labelsize=16, pad=10, right='on', top='on');
+    ax.tick_params(axis=axis, direction=direction, which='minor',
+                   length=minor_length, width=minor_width, right='on', top='on')
+    ax.tick_params(axis=axis, direction=direction, which='major', length=major_length,
+                   width=major_width, labelsize=16, pad=10, right='on', top='on')
     if path != '':
-        plt.savefig(path, dpi=dpi, facecolor='white');
+        plt.savefig(path, dpi=dpi, facecolor='white')
+
+def line_and_scatter_plot(line_y=[], line_x=[], scatter_y=[], scatter_x=[], yerrs=[], xerrs=[], labels=[], scatter_labels=[], colors=[], title='Title', xlabel='X Label', ylabel='Y Label', y_lim=[], x_lim=[], fmt='ro', markersize=10, axis='both', direction='in', major_length=8, major_width=1, minor_length=4, minor_width=1, fig_size=[20, 11.25], path='', dpi=128):
+    fig = plt.figure(figsize=fig_size)
+    ax = fig.gca()
+    m = len(line_x)
+    n = len(line_y)
+    l = len(labels)
+    c = len(colors)
+    sx = len(scatter_x)
+    sy = len(scatter_y)
+    xe = len(xerrs)
+    ye = len(yerrs)
+
+    if m != n and m != 1 and m != 0:
+        print("Invalid X data. len(line_x) can either be zero or one or equal to len(line_y).")
+        return
+
+    if c != n and c != 0:
+        print("Invalid colors specification. len(colors) should be either zero - use default colors, or equal to len(line_y) - one color for each line_y[i].")
+        return
+
+    if l != n and l != 0:
+        print("Invalid labels specification. len(labels) should be either zero or equal to len(line_y) - one label for each line_y[i].")
+        return
+
+    if xe != 0 and sx != xe:
+        print("Invalid X errors. len(xerrs) can either be zero or equal to len(scatter_x).")
+        return
+
+    if ye != 0 and sy != ye:
+        print("Invalid Y errors. len(yerrs) can either be zero or equal to len(scatter_y).")
+        return
+
+    if l == n:
+        if c == n:
+            if n > 0:           # one or more curves in the same plot
+                if m == n:                  # one line_x[i] for each line_y[i]
+                    for i in range(n):
+                        plt.plot(line_x[i], line_y[i],
+                                 colors[i], label=labels[i])
+                # same line_x values for all line_y[i]
+                elif m == 1 and n != 1:
+                    for i in range(n):
+                        plt.plot(line_x[0], line_y[i],
+                                 colors[i], label=labels[i])
+                else:                       # line_x values not specified
+                    for i in range(n):
+                        plt.plot(line_y[i], colors[i], label=labels[i])
+
+            else:               # empty figure
+                plt.plot()
+
+        else:  # c == 0
+            if n > 0:           # one or more curves in the same plot
+                if m == n:                  # one line_x[i] for each line_y[i]
+                    for i in range(n):
+                        plt.plot(line_x[i], line_y[i], label=labels[i])
+                # same line_x values for all line_y[i]
+                elif m == 1 and n != 1:
+                    for i in range(n):
+                        plt.plot(line_x[0], line_y[i], label=labels[i])
+                else:                       # line_x values not specified
+                    for i in range(n):
+                        plt.plot(line_y[i], label=labels[i])
+
+            else:               # empty figure
+                plt.plot()
+        plt.legend(fontsize=16)
+
+    else:  # l == 0
+        if c == n:
+            if n > 0:           # one or more curves in the same plot
+                if m == n:                  # one line_x[i] for each line_y[i]
+                    for i in range(n):
+                        plt.plot(line_x[i], line_y[i], colors[i])
+                # same line_x values for all line_y[i]
+                elif m == 1 and n != 1:
+                    for i in range(n):
+                        plt.plot(line_x[0], line_y[i], colors[i])
+                else:                       # line_x values not specified
+                    for i in range(n):
+                        plt.plot(line_y[i], colors[i])
+
+            else:               # empty figure
+                plt.plot()
+
+        else:  # c == 0
+            if n > 0:           # one or more curves in the same plot
+                if m == n:                  # one line_x[i] for each line_y[i]
+                    for i in range(n):
+                        plt.plot(line_x[i], line_y[i])
+                # same line_x values for all line_y[i]
+                elif m == 1 and n != 1:
+                    for i in range(n):
+                        plt.plot(line_x[0], line_y[i])
+                else:                       # line_x values not specified
+                    for i in range(n):
+                        plt.plot(line_y[i])
+
+            else:               # empty figure
+                plt.plot()
+
+    if ye != 0 and xe != 0:
+        for i in range(sy):
+            plt.errorbar(scatter_x[i], scatter_y[i], yerrs[i], xerrs[i], fmt=fmt, markersize=markersize, capsize=5, label=scatter_labels[i])
+    elif ye != 0 and xe == 0:
+        for i in range(sy):
+            plt.errorbar(scatter_x[i], scatter_y[i], yerrs[i], fmt=fmt, markersize=markersize, capsize=5, label=scatter_labels[i])
+    elif ye == 0 and xe != 0:
+        for i in range(sy):
+            plt.errorbar(scatter_x[i], scatter_y[i], xerrs[i], fmt=fmt, markersize=markersize, capsize=5, label=scatter_labels[i])
+    else:
+        for i in range(sy):
+            plt.scatter(scatter_x[i], scatter_y[i], label=scatter_labels[i], c='red', marker='o', markersize=markersize)
+
+    plt.title(title, fontsize=18)
+    plt.xlabel(xlabel, fontsize=16)
+    plt.ylabel(ylabel, fontsize=16)
+    if y_lim != []:
+        plt.ylim(y_lim[0], y_lim[1])
+    if x_lim != []:
+        plt.xlim(x_lim[0], x_lim[1])
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
+    ax.tick_params(axis=axis, direction=direction, which='minor', length=minor_length, width=minor_width, right='on', top='on')
+    ax.tick_params(axis=axis, direction=direction, which='major', length=major_length, width=major_width, labelsize=16, pad=10, right='on', top='on')
+
+    if path != '':
+        plt.savefig(path, dpi=dpi, facecolor='white')
 
 def sub_plots():
     print("sub_plots will be added soon. Till then, hold tight!")
