@@ -15,7 +15,7 @@ def setFonts(fontsize=18, axisLW=1, ticksize=5, tick_direction='out', padding=5,
 	plt.rc('ytick.minor', width=axisLW, size=ticksize/2)											# size of y minor ticks
 	plt.rc('legend', fontsize=fontsize)    															# legend fontsize
 	plt.rc('figure', titlesize=fontsize)															# fontsize of the figure title
-	plt.rc('mathtext', fontset='custom', rm='serif')												# raw text in math environment will be set to serif
+	plt.rc('mathtext', fontset='custom', rm='serif', it='serif:italic', bf='serif:bold', cal='serif')
 
 def help(*args):
     for arg in args:
